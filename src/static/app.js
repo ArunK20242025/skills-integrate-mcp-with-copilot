@@ -4,17 +4,65 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Filter elements
+  const searchBox = document.getElementById("search-box");
+  const categoryFilter = document.getElementById("category-filter");
+  const dayFilter = document.getElementById("day-filter");
+  const sortBy = document.getElementById("sort-by");
+  const sortOrder = document.getElementById("sort-order");
+
+  // Add event listeners for filters
+  searchBox.addEventListener("input", debounce(fetchActivities, 300));
+  categoryFilter.addEventListener("change", fetchActivities);
+  dayFilter.addEventListener("change", fetchActivities);
+  sortBy.addEventListener("change", fetchActivities);
+  sortOrder.addEventListener("change", fetchActivities);
+
+  // Debounce function to limit API calls
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
+    const searchQuery = searchBox.value;
+    const category = categoryFilter.value;
+    const day = dayFilter.value;
+    const sortByValue = sortBy.value;
+    const sortOrderValue = sortOrder.value;
+
+    // Build query string
+    const queryParams = new URLSearchParams();
+    if (searchQuery) queryParams.append("search", searchQuery);
+    if (category) queryParams.append("category", category);
+    if (day) queryParams.append("day", day);
+    if (sortByValue) queryParams.append("sort_by", sortByValue);
+    if (sortOrderValue) queryParams.append("sort_order", sortOrderValue);
+
+    const queryString = queryParams.toString();
     try {
-      const response = await fetch("/activities");
+      const response = await fetch(`/activities?${queryString}`);
       const activities = await response.json();
 
       // Clear loading message
       activitiesList.innerHTML = "";
 
+      // Clear activity select options except the first one
+      activitySelect.innerHTML =
+        '<option value="">-- Select an activity --</option>';
+
       // Populate activities list
-      Object.entries(activities).forEach(([name, details]) => {
+      activities.forEach((activity) => {
+        const name = activity.name;
+        const details = activity;
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
