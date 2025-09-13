@@ -15,6 +15,43 @@
     <main>
       <section id="activities-container">
         <h3>Available Activities</h3>
+        <div class="filter-toolbar">
+          <div class="filter-group">
+            <input
+              type="text"
+              id="search-box"
+              placeholder="Search activities..."
+            />
+          </div>
+          <div class="filter-group">
+            <select id="category-filter">
+              <option value="">All Categories</option>
+              <option value="Club">Clubs</option>
+              <option value="Sports">Sports</option>
+              <option value="Class">Classes</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <select id="day-filter">
+              <option value="">All Days</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <select id="sort-by">
+              <option value="name">Sort by Name</option>
+              <option value="time">Sort by Time</option>
+            </select>
+            <select id="sort-order">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+        </div>
         <div id="activities-list">
           <!-- Activities will be loaded here -->
           <p>Loading activities...</p>
@@ -26,7 +63,12 @@
         <form id="signup-form">
           <div class="form-group">
             <label for="email">Student Email:</label>
-            <input type="email" id="email" required placeholder="your-email@mergington.edu" />
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="your-email@mergington.edu"
+            />
           </div>
           <div class="form-group">
             <label for="activity">Select Activity:</label>
